@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from './firebase/config';
-import { collection, onSnapshot, query, where, addDoc, serverTimestamp } from "firebase/firestore";
-import { MessageCircle, X, Truck, MapPin, User, Phone, Star, Minus, Plus, Loader2, Heart, ArrowRight, Package, Headphones, Instagram } from 'lucide-react';
+// AJOUT DE updateDoc et doc DANS LES IMPORTS
+import { collection, onSnapshot, query, where, addDoc, serverTimestamp, updateDoc, doc } from "firebase/firestore";
+import { MessageCircle, X, Truck, MapPin, User, Phone, Star, Minus, Plus, Loader2, Heart, ArrowRight, Package, Headphones, Instagram, CheckCircle } from 'lucide-react';
 
 export default function VitrineClient() {
   const [produitsStock, setProduitsStock] = useState([]);
@@ -9,6 +10,8 @@ export default function VitrineClient() {
   const [quantite, setQuantite] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ nom: '', tel: '', lieu: '', couleur: 'Marron' });
+  // NOUVEL ETAT POUR LA NOTIFICATION
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const WHATSAPP_NUMBER = "237691154011";
 
@@ -46,15 +49,24 @@ export default function VitrineClient() {
       alert("Veuillez remplir les informations de livraison.");
       return;
     }
-    setIsSubmitting(true);
-    const pelucheBD = produitsStock.find(p => p.categorie === selectedSize.cat && Number(p.taille) === Number(selectedSize.taille));
+    
+    const pelucheBD = produitsStock.find(p => 
+      p.categorie === selectedSize.cat && 
+      Number(p.taille) === Number(selectedSize.taille) &&
+      p.couleur === formData.couleur
+    );
     
     if(!pelucheBD) {
-      alert("Modèle indisponible en stock actuellement.");
-      setIsSubmitting(false);
+      alert("Ce modèle n'est plus disponible dans cette couleur.");
       return;
     }
 
+    if (pelucheBD.stock < quantite) {
+      alert(`Désolé, il ne reste que ${pelucheBD.stock} articles en stock.`);
+      return;
+    }
+
+    setIsSubmitting(true);
     const prixTotalCalcule = Number(pelucheBD.prix_vente) * quantite;
 
     try {
@@ -76,12 +88,20 @@ export default function VitrineClient() {
         vendeur: "Vitrine"
       });
 
+      const pelucheRef = doc(db, "peluches", pelucheBD.id);
+      await updateDoc(pelucheRef, {
+        stock: Number(pelucheBD.stock) - Number(quantite)
+      });
+
       const message = `✨ *NOUVELLE COMMANDE* ✨\n\n👤 *Client :* ${formData.nom}\n📍 *Lieu :* ${formData.lieu}\n📞 *Contact :* ${formData.tel}\n--------------------------\n🧸 *Article :* ${selectedSize.taille} ${formData.couleur} ${selectedSize.cat}\n🔢 *Quantité :* ${quantite}\n💰 *Prix Total :* ${prixTotalCalcule.toLocaleString()} FCFA\n--------------------------\n🚀 _Paiement à la livraison._`;
-      
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+      
       setSelectedSize(null);
+      // DECLENCHEMENT DE LA MODALE GEANTE
+      setShowSuccess(true);
     } catch (e) {
-      alert("Erreur lors de l'enregistrement.");
+      console.error(e);
+      alert("Erreur lors de la validation de la commande.");
     } finally {
       setIsSubmitting(false);
     }
@@ -191,7 +211,7 @@ export default function VitrineClient() {
         </div>
       </section>
 
-      {/* SECTION LIVRAISON (AJOUTÉE SELON IMAGE 3) */}
+      {/* SECTION LIVRAISON */}
       <section id="apropos" className="px-6 py-32 max-w-7xl mx-auto scroll-mt-24">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-[#2D2420] uppercase tracking-tighter italic">Livraison partout au Cameroun</h2>
@@ -253,11 +273,21 @@ export default function VitrineClient() {
                 </div>
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Couleur</label>
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Couleurs disponibles en stock</label>
                         <div className="flex flex-wrap gap-2">
-                            {["Marron", "Rose", "Blanc", "Violet", "Rouge"].map(c => (
-                                <button key={c} onClick={() => setFormData({...formData, couleur: c})} 
-                                        className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase border-2 transition-all ${formData.couleur === c ? 'bg-[#1A1513] text-white border-[#1A1513]' : 'bg-white text-gray-400 border-gray-100'}`}>
+                            {[...new Set(produitsStock
+                                .filter(p => p.categorie === selectedSize.cat && Number(p.taille) === Number(selectedSize.taille))
+                                .map(p => p.couleur)
+                            )].map(c => (
+                                <button 
+                                    key={c} 
+                                    onClick={() => setFormData({...formData, couleur: c})} 
+                                    className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase border-2 transition-all ${
+                                        formData.couleur === c 
+                                        ? 'bg-[#1A1513] text-white border-[#1A1513]' 
+                                        : 'bg-white text-gray-400 border-gray-100 hover:border-orange-200'
+                                    }`}
+                                >
                                     {c}
                                 </button>
                             ))}
@@ -286,11 +316,9 @@ export default function VitrineClient() {
         </div>
       )}
 
-      {/* FOOTER STYLE IMAGE (FINAL) */}
+      {/* FOOTER */}
       <footer className="bg-[#2D2420] text-white pt-24 pb-12 px-6 md:px-24 rounded-t-[4rem]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-32">
-          
-          {/* COLONNE 1 : LOGO & DESC */}
           <div className="space-y-8">
             <div className="flex items-center gap-4">
               <img src="/images/logo.jpeg" alt="Logo" className="w-12 h-12 object-contain rounded-xl bg-white p-1" />
@@ -305,7 +333,6 @@ export default function VitrineClient() {
             </div>
           </div>
 
-          {/* COLONNE 2 : CONTACT */}
           <div className="space-y-8">
             <h5 className="text-lg font-black uppercase tracking-widest italic">Contact</h5>
             <div className="space-y-6">
@@ -320,7 +347,6 @@ export default function VitrineClient() {
             </div>
           </div>
 
-          {/* COLONNE 3 : POINTS DE RETRAIT */}
           <div className="space-y-8">
             <h5 className="text-lg font-black uppercase tracking-widest italic">Points de Retrait</h5>
             <div className="space-y-6 text-gray-300 font-bold">
@@ -334,7 +360,6 @@ export default function VitrineClient() {
               </div>
             </div>
           </div>
-
         </div>
         
         <div className="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-black uppercase tracking-[0.3em] text-white/20">
@@ -342,6 +367,31 @@ export default function VitrineClient() {
             <p>Made with ❤️ in 237</p>
         </div>
       </footer>
+
+      {/* MODALE DE SUCCÈS PERSONNALISÉE (GRANDE ET JOLIE) */}
+      {showSuccess && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-[#1A1513]/80 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setShowSuccess(false)} />
+          <div className="relative bg-white w-full max-w-md rounded-[4rem] p-12 text-center shadow-2xl animate-in zoom-in-95 duration-500">
+            <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
+              <CheckCircle size={56} strokeWidth={2.5} />
+            </div>
+            <h3 className="text-4xl font-black italic uppercase tracking-tighter text-[#2D2420] mb-4">
+              Envoi Réussi !
+            </h3>
+            <p className="text-gray-500 font-bold leading-relaxed mb-10 text-lg">
+              Votre commande a été envoyée.<br/>
+              Votre colis est désormais <span className="text-[#E35D4E]">réservé</span>. 🧸✨
+            </p>
+            <button 
+              onClick={() => setShowSuccess(false)}
+              className="w-full bg-[#1A1513] text-white py-6 rounded-[2rem] font-black uppercase text-xs hover:scale-105 transition-transform shadow-xl"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
