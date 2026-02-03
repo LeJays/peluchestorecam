@@ -120,7 +120,7 @@ export default function VitrineClient() {
             <img src="/images/logo.jpeg" alt="Logo" className="w-full h-full object-contain" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-sm font-black text-[#2D2420] leading-tight uppercase">Magasin de peluches<br/>Cameroun</h1>
+            <h1 className="text-sm font-black text-[#2D2420] leading-tight uppercase">Peluche Store<br/>Cameroun</h1>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ export default function VitrineClient() {
           </div>
         </div>
         <div className="w-full md:w-1/2">
-          <img src="/images/SV.jpeg" alt="Promo" className="w-full h-auto rounded-[3rem] shadow-2xl" />
+          <img src="/images/sv.png" alt="Promo" className="w-full h-auto rounded-[3rem] shadow-2xl" />
         </div>
       </section>
 
@@ -160,7 +160,7 @@ export default function VitrineClient() {
               {catalogueFixe.filter(p => p.cat === cat).map(p => (
                 <div key={p.id} onClick={() => { setSelectedSize(p); setQuantite(1); }} className="group cursor-pointer">
                   <div className="relative aspect-[4/5] bg-white rounded-[4rem] overflow-hidden shadow-2xl transition-all duration-700">
-                    <img src={`/images/${cat.toLowerCase()}-${p.taille}.jpeg`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s]" alt="" />
+                    <img src={`/images/${cat.toLowerCase()}-${p.taille}.png`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s]" alt="" />
                     <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-xl px-6 py-3 rounded-3xl shadow-xl">
                         <span className="text-xl font-black">{p.prixAffiche.toLocaleString()} F</span>
                     </div>
@@ -264,7 +264,7 @@ export default function VitrineClient() {
           <div className="absolute inset-0 bg-[#1A1513]/60 backdrop-blur-md" onClick={() => !isSubmitting && setSelectedSize(null)} />
           <div className="relative bg-white w-full max-w-4xl rounded-[4rem] shadow-2xl flex flex-col md:flex-row overflow-hidden animate-in zoom-in-95 max-h-[90vh]">
             <div className="hidden md:block w-1/2">
-                <img src={`/images/${selectedSize.cat.toLowerCase()}-${selectedSize.taille}.jpeg`} className="w-full h-full object-cover" alt=""/>
+                <img src={`/images/${selectedSize.cat.toLowerCase()}-${selectedSize.taille}.png`} className="w-full h-full object-cover" alt=""/>
             </div>
             <div className="w-full md:w-1/2 p-8 md:p-16 overflow-y-auto">
                 <div className="flex justify-between items-start mb-8">
@@ -322,10 +322,10 @@ export default function VitrineClient() {
           <div className="space-y-8">
             <div className="flex items-center gap-4">
               <img src="/images/logo.jpeg" alt="Logo" className="w-12 h-12 object-contain rounded-xl bg-white p-1" />
-              <h4 className="text-xl font-black uppercase italic leading-tight tracking-tighter">Magasin de peluches<br/>Cameroun</h4>
+              <h4 className="text-xl font-black uppercase italic leading-tight tracking-tighter">Peluches Store<br/>Cameroun</h4>
             </div>
             <p className="text-gray-400 text-sm font-medium leading-relaxed max-w-[250px]">
-              Votre boutique en ligne de nounours géants au Cameroun. Des peluches ultra-douces pour offrir le plus beau des cadeaux.
+              Pour la Saint-Valentin, offrez plus qu’un cadeau : offrez du bonheur avec nos Peluches.
             </p>
             <div className="flex items-center gap-5 pt-4">
                <button onClick={() => window.open('https://www.tiktok.com/@peluche.store.cameroun?_r=1&_t=ZM-92llLD3AzTI', '_blank')} className="hover:text-[#E35D4E] transition-colors"><MessageCircle size={22}/></button>
