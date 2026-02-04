@@ -145,7 +145,7 @@ export default function VitrineClient() {
           </div>
         </div>
         <div className="w-full md:w-1/2">
-          <img src="/images/sv.png" alt="Promo" className="w-full h-auto rounded-[3rem] shadow-2xl" />
+          <img src="/images/SV.jpeg" alt="Promo" className="w-full h-auto rounded-[3rem] shadow-2xl" />
         </div>
       </section>
 
