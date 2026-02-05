@@ -264,7 +264,7 @@ export default function VitrineClient() {
           <div className="absolute inset-0 bg-[#1A1513]/60 backdrop-blur-md" onClick={() => !isSubmitting && setSelectedSize(null)} />
           <div className="relative bg-white w-full max-w-4xl rounded-[4rem] shadow-2xl flex flex-col md:flex-row overflow-hidden animate-in zoom-in-95 max-h-[90vh]">
             <div className="hidden md:block w-1/2">
-                <img src={`/images/${selectedSize.cat.toLowerCase()}-${selectedSize.taille}.png`} className="w-full h-full object-cover" alt=""/>
+                <img src={`/images/${selectedSize.cat.toLowerCase()}-${selectedSize.taille}.jpeg`} className="w-full h-full object-cover" alt=""/>
             </div>
             <div className="w-full md:w-1/2 p-8 md:p-16 overflow-y-auto">
                 <div className="flex justify-between items-start mb-8">
