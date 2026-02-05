@@ -160,7 +160,7 @@ export default function VitrineClient() {
               {catalogueFixe.filter(p => p.cat === cat).map(p => (
                 <div key={p.id} onClick={() => { setSelectedSize(p); setQuantite(1); }} className="group cursor-pointer">
                   <div className="relative aspect-[4/5] bg-white rounded-[4rem] overflow-hidden shadow-2xl transition-all duration-700">
-                    <img src={`/images/${cat.toLowerCase()}-${p.taille}.png`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s]" alt="" />
+                    <img src={`/images/${cat.toLowerCase()}-${p.taille}.jpeg`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s]" alt="" />
                     <div className="absolute top-8 right-8 bg-white/90 backdrop-blur-xl px-6 py-3 rounded-3xl shadow-xl">
                         <span className="text-xl font-black">{p.prixAffiche.toLocaleString()} F</span>
                     </div>
