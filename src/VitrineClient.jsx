@@ -68,6 +68,7 @@ export default function VitrineClient() {
 
     setIsSubmitting(true);
     const prixTotalCalcule = Number(pelucheBD.prix_vente) * quantite;
+    const prixVitrineTotal = Number(selectedSize.prixAffiche) * quantite;
 
     try {
       await addDoc(collection(db, "commandes"), {
@@ -93,7 +94,7 @@ export default function VitrineClient() {
         stock: Number(pelucheBD.stock) - Number(quantite)
       });
 
-      const message = `✨ *NOUVELLE COMMANDE* ✨\n\n👤 *Client :* ${formData.nom}\n📍 *Lieu :* ${formData.lieu}\n📞 *Contact :* ${formData.tel}\n--------------------------\n🧸 *Article :* ${selectedSize.taille} ${formData.couleur} ${selectedSize.cat}\n🔢 *Quantité :* ${quantite}\n💰 *Prix Total :* ${prixTotalCalcule.toLocaleString()} FCFA\n--------------------------\n🚀 _Paiement à la livraison._`;
+      const message = `✨ *NOUVELLE COMMANDE* ✨\n\n👤 *Client :* ${formData.nom}\n📍 *Lieu :* ${formData.lieu}\n📞 *Contact :* ${formData.tel}\n--------------------------\n🧸 *Article :* ${selectedSize.taille} ${formData.couleur} ${selectedSize.cat}\n🔢 *Quantité :* ${quantite}\n💰 *Prix Total :* ${prixVitrineTotal.toLocaleString()} FCFA\n--------------------------\n🚀 _Paiement à la livraison._`;
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
       
       setSelectedSize(null);
