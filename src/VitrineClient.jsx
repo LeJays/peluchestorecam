@@ -155,7 +155,7 @@ export default function VitrineClient() {
         {['STANDARD', 'PREMIUM'].map(cat => (
           <div key={cat} className="space-y-16">
             <h3 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter border-b border-orange-100 pb-8">
-                {cat === 'PREMIUM' ? '✨ Spécial Saint-Valentin' : '🧸 Collection Classique'}
+                {cat === 'PREMIUM' ? '✨ Collection Premium' : '🧸 Collection Classique'}
             </h3>
             <div className={`grid grid-cols-1 ${cat === 'PREMIUM' ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-12`}>
               {catalogueFixe.filter(p => p.cat === cat).map(p => (
