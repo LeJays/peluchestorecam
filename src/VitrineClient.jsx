@@ -139,7 +139,6 @@ export default function VitrineClient() {
             <span>✨</span><p>Livraison partout au Cameroun</p>
           </div>
           <h2 className="text-5xl md:text-7xl font-black text-[#2D2420] leading-[1.1]">Dites-lui Je t'aime <br/>en format géant ! 🧸✨</h2>
-          <p className="text-gray-500 text-lg font-medium leading-relaxed max-w-md">Plus qu'un simple cadeau, offrez un câlin éternel. Nos peluches premium, ultra-douces et XXL, sont prêtes à conquérir son cœur.</p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => scrollToSection('collections')} className="bg-[#E35D4E] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:scale-105 transition-transform shadow-lg">Voir la collection ↓</button>
             <button onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER}`, '_blank')} className="bg-[#5C4B43] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:scale-105 transition-transform shadow-lg">Commander sur WhatsApp</button>
