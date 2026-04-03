@@ -152,7 +152,7 @@ export default function VitrineClient() {
 
       {/* CATALOGUE */}
       <main id="collections" className="px-6 pb-32 max-w-7xl mx-auto space-y-40 scroll-mt-24">
-        {['PREMIUM', 'STANDARD'].map(cat => (
+        {['STANDARD', 'PREMIUM'].map(cat => (
           <div key={cat} className="space-y-16">
             <h3 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter border-b border-orange-100 pb-8">
                 {cat === 'PREMIUM' ? '✨ Spécial Saint-Valentin' : '🧸 Collection Classique'}
